@@ -3,7 +3,7 @@ const logStyles = {
 	roundStyle: [
 		"font-size: 15px",
 		"border-bottom: 1px solid black",
-		"padding-top: 15px"
+		"margin-top: 15px"
 	].join(";"),
 	choiceStyle: [
 		"font-size: 15px",
@@ -19,6 +19,7 @@ const logStyles = {
 
 let userScore = 0;
 let computerScore = 0;
+
 function getComputerChoice() {
 	const chooseNumber = Math.floor(Math.random() * choices.length);
 	const choice = choices[chooseNumber];
@@ -32,14 +33,14 @@ function getUserChoice() {
 	return choice;
 };
 
-function logChoices(userChoice, computerChoice, whoWon) {
+function logRoundChoices(userChoice, computerChoice, whoWon) {
 	if (whoWon === "draw") {
-		console.log(`%cA draw! both players chose ${userChoice}`, logStyles.choiceStyle)
+		console.log(`%cA draw! both players chose ${userChoice}`, logStyles.choiceStyle);
 	} else if (whoWon === "user") {
 		console.log(`%cusers ${userChoice} beats computers ${computerChoice}`, logStyles.choiceStyle);
 	} else if (whoWon === "computer") {
 		console.log(`%ccomputers ${computerChoice} beats users ${userChoice}`, logStyles.choiceStyle);
-	};
+	} else console.log("whoops, something went wrong");
 };
 function logResultOfRound(userScore, computerScore) {
 	console.log(`%cScores after the round - User: ${userScore}, Computer: ${computerScore}`, logStyles.roundResult);
@@ -53,26 +54,26 @@ function resetScores() {
 function playARound(userChoice, computerChoice) {
 	if (userChoice === "paper" && computerChoice === "rock") {
 		userScore += 1;
-		logChoices(userChoice, computerChoice, "user");
+		logRoundChoices(userChoice, computerChoice, "user");
 		logResultOfRound(userScore, computerScore);
 	} else if (userChoice === "rock" && computerChoice === "scissors") {
 		userScore += 1;
-		logChoices(userChoice, computerChoice, "user");
+		logRoundChoices(userChoice, computerChoice, "user");
 		logResultOfRound(userScore, computerScore);
 	} else if (userChoice === "scissors" && computerChoice === "paper") {
 		userScore += 1;
-		logChoices(userChoice, computerChoice, "user");
+		logRoundChoices(userChoice, computerChoice, "user");
 		logResultOfRound(userScore, computerScore);
 	} else if (userChoice === computerChoice) {
-		logChoices(userChoice, computerChoice, "draw");
+		logRoundChoices(userChoice, computerChoice, "draw");
 		logResultOfRound(userScore, computerScore);
 	} else {
 		computerScore += 1;
-		logChoices(userChoice, computerChoice, "computer");
+		logRoundChoices(userChoice, computerChoice, "computer");
 		logResultOfRound(userScore, computerScore);
 	};
 };
-function playGame() {
+function playAGame() {
 	if (userScore !== 0 || computerScore !== 0) {
 		resetScores();
 	};
@@ -90,3 +91,4 @@ function playGame() {
 
 	resetScores();
 };
+playAGame()
