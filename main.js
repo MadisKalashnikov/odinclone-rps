@@ -27,7 +27,7 @@ function getComputerChoice() {
 function getUserChoice() {
 	let choice = prompt("rock, paper or scissors?", "rock").toLowerCase();
 	while (!choices.includes(choice)) {
-		choice = prompt(`choose rock, paper or scissors. "${choice}" is not valid`).toLowerCase();
+		choice = prompt(`choose rock, paper or scissors. "${choice}" is not a valid choice`).toLowerCase();
 	}
 	return choice;
 };
@@ -42,7 +42,7 @@ function logChoices(userChoice, computerChoice, whoWon) {
 	};
 };
 function logResultOfRound(userScore, computerScore) {
-	console.log(`%cResult of the round - User: ${userScore}, Computer: ${computerScore}`, logStyles.roundResult);
+	console.log(`%cScores after the round - User: ${userScore}, Computer: ${computerScore}`, logStyles.roundResult);
 };
 
 function resetScores() {
