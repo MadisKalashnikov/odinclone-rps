@@ -1,22 +1,25 @@
 const choices = ["rock", "paper", "scissors"];
 const logStyles = {
-	announcementStlye: [
-		"font-size: 17px"
+	announcementStyle: [
+		"font-size: 16px"
 	].join(";"),
 	roundStyle: [
-		"font-size: 13px",
+		"font-size: 15px",
 		"border-bottom: 1px solid black",
 		"margin-top: 5px"
+	].join(";"),
+	sillyGoose: [
+		"font-size: 15px"
 	].join(";"),
 	choiceStyle: [
 		"font-size: 13px"
 	].join(";"),
 	roundResult: [
-		"font-size: 15px"
+		"font-size: 13px"
 	].join(";"),
 	finalResult: [
 		"font-size: 16px",
-		"border-bottom: 2px double black"
+		"border-bottom: 3px solid black"
 	].join(";")
 };
 
@@ -30,28 +33,34 @@ function getComputerChoice() {
 	return choice;
 };
 function getUserChoice() {
-	let choice = prompt("rock, paper or scissors?", "rock").toLowerCase();
-	while (!choices.includes(choice)) {
-		choice = prompt(`choose rock, paper or scissors. "${choice}" is not a valid choice`).toLowerCase();
+	let choice = prompt("rock, paper or scissors?", "rock")
+	if (choice === null) {
+		return "chicken";
 	}
-	return choice;
+	while (!choices.includes(choice)) {
+		if (choice === null) {
+			return "chicken";
+		}
+		choice = prompt(`choose rock, paper or scissors. "${choice}" is not a valid option`);
+	}
+	return choice.toLowerCase();
 };
 
-// round logs
+// logs
 function logRoundChoices(userChoice, computerChoice, whoWon) {
 	if (whoWon === "draw") {
-		console.log(`%cA draw! both players chose ${userChoice}`, logStyles.choiceStyle);
+		console.log(`%cA draw! Both players chose ${userChoice}`, logStyles.choiceStyle);
 	} else if (whoWon === "user") {
-		console.log(`%cusers ${userChoice} beats computers ${computerChoice}`, logStyles.choiceStyle);
+		console.log(`%cUsers ${userChoice} beats computers ${computerChoice}`, logStyles.choiceStyle);
 	} else if (whoWon === "computer") {
-		console.log(`%ccomputers ${computerChoice} beats users ${userChoice}`, logStyles.choiceStyle);
-	} else console.log("whoops, something went wrong");
+		console.log(`%cComputers ${computerChoice} beats users ${userChoice}`, logStyles.choiceStyle);
+	} else console.log("Whoops, something went wrong");
 };
 function logResultOfRound(userScore, computerScore) {
 	console.log(`%cScores after the round - User: ${userScore}, Computer: ${computerScore}`, logStyles.roundResult);
 };
-function logRounds(rounds) {
-	console.log(`Playing ${rounds} ${rounds > 1 ? "rounds" : "round"}!`);
+function logRounds(bestOf, rounds) {
+	console.log(`%cPlaying ${bestOf ? "a best of " : ""}${Math.round(rounds)} ${rounds >= 2 ? "rounds" : "round"}`, logStyles.announcementStyle);
 };
 function logFinalResult(name) {
 	name === "draw" 
@@ -64,51 +73,82 @@ function resetScores() {
 	computerScore = 0;
 };
 
-function playARound(userChoice, computerChoice) {
-	if (userChoice === computerChoice) {
-		logRoundChoices(userChoice, computerChoice, "draw");
-		logResultOfRound(userScore, computerScore); 
-	} else if (userChoice === "paper" && computerChoice === "rock") {
-		userScore += 1;
-		logRoundChoices(userChoice, computerChoice, "user");
-		logResultOfRound(userScore, computerScore);
-	} else if (userChoice === "rock" && computerChoice === "scissors") {
-		userScore += 1;
-		logRoundChoices(userChoice, computerChoice, "user");
-		logResultOfRound(userScore, computerScore);
-	} else if (userChoice === "scissors" && computerChoice === "paper") {
-		userScore += 1;
-		logRoundChoices(userChoice, computerChoice, "user");
-		logResultOfRound(userScore, computerScore);
+function playARound(userChoice, computerChoice, bestOfChoice, winBestOf, rounds) {
+	if (bestOfChoice === true && userChoice === "chicken") {
+		computerScore = winBestOf;
+		console.log(`%csilly goose chickened out`, logStyles.sillyGoose);
+	} else if (bestOfChoice === false && userChoice === "chicken") {
+		computerScore = rounds;
+		console.log(`%csilly goose chickened out`, logStyles.sillyGoose);
 	} else {
-		computerScore += 1;
-		logRoundChoices(userChoice, computerChoice, "computer");
-		logResultOfRound(userScore, computerScore);
-	};
+		if (userChoice === computerChoice) {
+			logRoundChoices(userChoice, computerChoice, "draw");
+			logResultOfRound(userScore, computerScore); 
+		} else if (userChoice === "paper" && computerChoice === "rock") {
+			userScore += 1;
+			logRoundChoices(userChoice, computerChoice, "user");
+			logResultOfRound(userScore, computerScore);
+		} else if (userChoice === "rock" && computerChoice === "scissors") {
+			userScore += 1;
+			logRoundChoices(userChoice, computerChoice, "user");
+			logResultOfRound(userScore, computerScore);
+		} else if (userChoice === "scissors" && computerChoice === "paper") {
+			userScore += 1;
+			logRoundChoices(userChoice, computerChoice, "user");
+			logResultOfRound(userScore, computerScore);
+		} else {
+			computerScore += 1;
+			logRoundChoices(userChoice, computerChoice, "computer");
+			logResultOfRound(userScore, computerScore);
+		} ;
+	}
 };
 function playAGame(bestOf = false, rounds = 5) {
-	const bestOfComparison = Math.round(rounds / 2)
-
-	logRounds(rounds);
-
 	if (userScore !== 0 || computerScore !== 0) {
 		resetScores();
 	};
+	// checks
+	if (rounds <= 0) {
+		console.log("you silly goose, i'll give the win to computer for that one");
+		computerScore = 69420;
+		logResultOfRound(userScore, computerScore);
+		return "haha, funny number";
+	};
+	if (typeof bestOf !== "boolean") {
+		if (bestOf === "false") {
+			bestOf = false;
+		} else if (bestOf === "true") {
+			bestOf = true;
+		} else {
+			return console.log(`you silly goose "${bestOf}" is not a boolean`);
+		}
+	};
+	if (parseInt(rounds) === NaN) {
+		return console.log(`you silly goose "${rounds}" is not a number`);
+	} else {
+		rounds = parseInt(rounds);
+	};
+	if (bestOf === true && rounds % 2 === 0) {
+		return `you silly goose, why would you play a best of ${rounds}`;
+	};
 
+	logRounds(bestOf, rounds);
+
+	const bestOfComparison = Math.round(rounds / 2);
 	for (let i = 0; i < (bestOf ? Infinity : rounds); i++) {
-		if (rounds <= 0) {
-			console.log("okay, you silly goose");
-			break;
-		};
 		console.log(`%cRound ${i + 1}`, logStyles.roundStyle);
-		playARound(getUserChoice(), getComputerChoice());
+		playARound(getUserChoice(), getComputerChoice(), bestOf, bestOfComparison, rounds);
 		if (bestOf === true) {
-			if (userScore === bestOfComparison) {
-				break;
-			} else if (computerScore === bestOfComparison) {
+			if (userScore === bestOfComparison || computerScore === bestOfComparison) {
 				break;
 			};
 		};
+		if (bestOf === false) {
+			if (userScore === rounds || computerScore === rounds) {
+				break;
+			}
+		};
+
 	};
 	if (userScore > computerScore) {
 		logFinalResult("user");
