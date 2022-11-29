@@ -1,25 +1,29 @@
 const choices = ["rock", "paper", "scissors"];
 const logStyles = {
+	announcementStlye: [
+		"font-size: 17px"
+	].join(";"),
 	roundStyle: [
-		"font-size: 15px",
+		"font-size: 13px",
 		"border-bottom: 1px solid black",
-		"margin-top: 15px"
+		"margin-top: 5px"
 	].join(";"),
 	choiceStyle: [
-		"font-size: 15px",
+		"font-size: 13px"
 	].join(";"),
 	roundResult: [
-		"font-size: 16px",
+		"font-size: 15px"
 	].join(";"),
 	finalResult: [
-		"font-size: 17px",
-		"border-bottom: 2px double black",
+		"font-size: 16px",
+		"border-bottom: 2px double black"
 	].join(";")
 };
 
 let userScore = 0;
 let computerScore = 0;
 
+// choices
 function getComputerChoice() {
 	const chooseNumber = Math.floor(Math.random() * choices.length);
 	const choice = choices[chooseNumber];
@@ -33,6 +37,7 @@ function getUserChoice() {
 	return choice;
 };
 
+// round logs
 function logRoundChoices(userChoice, computerChoice, whoWon) {
 	if (whoWon === "draw") {
 		console.log(`%cA draw! both players chose ${userChoice}`, logStyles.choiceStyle);
@@ -45,6 +50,14 @@ function logRoundChoices(userChoice, computerChoice, whoWon) {
 function logResultOfRound(userScore, computerScore) {
 	console.log(`%cScores after the round - User: ${userScore}, Computer: ${computerScore}`, logStyles.roundResult);
 };
+function logRounds(rounds) {
+	console.log(`Playing ${rounds} ${rounds > 1 ? "rounds" : "round"}!`);
+};
+function logFinalResult(name) {
+	name === "draw" 
+	? console.log(`%cFinal result - It's a draw!`, logStyles.finalResult)
+	: console.log(`%cFinal Result - ${name} won!`, logStyles.finalResult);
+};
 
 function resetScores() {
 	userScore = 0;
@@ -52,7 +65,10 @@ function resetScores() {
 };
 
 function playARound(userChoice, computerChoice) {
-	if (userChoice === "paper" && computerChoice === "rock") {
+	if (userChoice === computerChoice) {
+		logRoundChoices(userChoice, computerChoice, "draw");
+		logResultOfRound(userScore, computerScore); 
+	} else if (userChoice === "paper" && computerChoice === "rock") {
 		userScore += 1;
 		logRoundChoices(userChoice, computerChoice, "user");
 		logResultOfRound(userScore, computerScore);
@@ -64,31 +80,43 @@ function playARound(userChoice, computerChoice) {
 		userScore += 1;
 		logRoundChoices(userChoice, computerChoice, "user");
 		logResultOfRound(userScore, computerScore);
-	} else if (userChoice === computerChoice) {
-		logRoundChoices(userChoice, computerChoice, "draw");
-		logResultOfRound(userScore, computerScore);
 	} else {
 		computerScore += 1;
 		logRoundChoices(userChoice, computerChoice, "computer");
 		logResultOfRound(userScore, computerScore);
 	};
 };
-function playAGame() {
+function playAGame(bestOf = false, rounds = 5) {
+	const bestOfComparison = Math.round(rounds / 2)
+
+	logRounds(rounds);
+
 	if (userScore !== 0 || computerScore !== 0) {
 		resetScores();
 	};
-	for (let i = 0; i < 5; i++) {
-		console.log(`%cRound ${i + 1}`, logStyles.roundStyle)
+
+	for (let i = 0; i < (bestOf ? Infinity : rounds); i++) {
+		if (rounds <= 0) {
+			console.log("okay, you silly goose");
+			break;
+		};
+		console.log(`%cRound ${i + 1}`, logStyles.roundStyle);
 		playARound(getUserChoice(), getComputerChoice());
+		if (bestOf === true) {
+			if (userScore === bestOfComparison) {
+				break;
+			} else if (computerScore === bestOfComparison) {
+				break;
+			};
+		};
 	};
 	if (userScore > computerScore) {
-		console.log("%cFinal result - User won!", logStyles.finalResult);
+		logFinalResult("user");
 	} else if (computerScore > userScore) {
-		console.log("%cFinal result - Computer won!", logStyles.finalResult);
+		logFinalResult("computer");
 	} else if (computerScore === userScore) {
-		console.log("%cFinal result - It's a draw!", logStyles.finalResult);
+		logFinalResult("draw");
 	} else return console.log("whoops, something went wrong.");
 
 	resetScores();
 };
-playAGame()
