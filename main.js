@@ -77,31 +77,32 @@ function playARound(userChoice, computerChoice, bestOfChoice, winBestOf, rounds)
 	if (bestOfChoice === true && userChoice === "chicken") {
 		computerScore = winBestOf;
 		console.log(`%csilly goose chickened out`, logStyles.sillyGoose);
+		return;
 	} else if (bestOfChoice === false && userChoice === "chicken") {
 		computerScore = rounds;
 		console.log(`%csilly goose chickened out`, logStyles.sillyGoose);
-	} else {
-		if (userChoice === computerChoice) {
-			logRoundChoices(userChoice, computerChoice, "draw");
-			logResultOfRound(userScore, computerScore); 
-		} else if (userChoice === "paper" && computerChoice === "rock") {
-			userScore += 1;
-			logRoundChoices(userChoice, computerChoice, "user");
-			logResultOfRound(userScore, computerScore);
-		} else if (userChoice === "rock" && computerChoice === "scissors") {
-			userScore += 1;
-			logRoundChoices(userChoice, computerChoice, "user");
-			logResultOfRound(userScore, computerScore);
-		} else if (userChoice === "scissors" && computerChoice === "paper") {
-			userScore += 1;
-			logRoundChoices(userChoice, computerChoice, "user");
-			logResultOfRound(userScore, computerScore);
-		} else {
-			computerScore += 1;
-			logRoundChoices(userChoice, computerChoice, "computer");
-			logResultOfRound(userScore, computerScore);
-		} ;
+		return;
 	}
+	if (userChoice === computerChoice) {
+		logRoundChoices(userChoice, computerChoice, "draw");
+		logResultOfRound(userScore, computerScore); 
+	} else if (userChoice === "paper" && computerChoice === "rock") {
+		userScore += 1;
+		logRoundChoices(userChoice, computerChoice, "user");
+		logResultOfRound(userScore, computerScore);
+	} else if (userChoice === "rock" && computerChoice === "scissors") {
+		userScore += 1;
+		logRoundChoices(userChoice, computerChoice, "user");
+		logResultOfRound(userScore, computerScore);
+	} else if (userChoice === "scissors" && computerChoice === "paper") {
+		userScore += 1;
+		logRoundChoices(userChoice, computerChoice, "user");
+		logResultOfRound(userScore, computerScore);
+	} else {
+		computerScore += 1;
+		logRoundChoices(userChoice, computerChoice, "computer");
+		logResultOfRound(userScore, computerScore);
+	} ;
 };
 function playAGame(bestOf = false, rounds = 5) {
 	if (userScore !== 0 || computerScore !== 0) {
