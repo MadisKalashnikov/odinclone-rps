@@ -151,7 +151,7 @@ function playAGame(rounds = 5, bestOf = false) {
 	logRounds(bestOf, rounds);
 
 	const bestOfComparison = Math.round(rounds / 2);
-	for (let i = 0; i < (bestOf && rounds > 0 ? Infinity : rounds); i++) {
+	for (let i = 0; i < (bestOf ? Infinity : rounds); i++) {
 		console.log(`%cRound ${i + 1}`, logStyles.roundStyle);
 		playARound(
 			getUserChoice(),
