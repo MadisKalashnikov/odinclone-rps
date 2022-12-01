@@ -36,13 +36,13 @@ function getUserChoice() {
 	let choice = prompt("rock, paper or scissors?", "rock")
 	if (choice === null) {
 		return "chicken";
-	}
+	};
 	while (!choices.includes(choice)) {
 		if (choice === null) {
 			return "chicken";
-		}
+		};
 		choice = prompt(`choose rock, paper or scissors. "${choice}" is not a valid option`);
-	}
+	};
 	return choice.toLowerCase();
 };
 
@@ -125,8 +125,8 @@ function playAGame(rounds = 5, bestOf = false) {
 			return `silly goose, i need a number`
 		} else {
 			rounds = parseInt(rounds)
-		}
-	}
+		};
+	};
 	if (rounds <= 0) {
 		computerScore = 69420;
 		logResultOfRound(userScore, computerScore);
@@ -179,5 +179,5 @@ function playAGame(rounds = 5, bestOf = false) {
 	} else if (computerScore === userScore) {
 		logFinalResult("draw");
 		return "you still suck"
-	} else return "whoops, something went wrong."
+	} else return "whoops, something went wrong.";
 };
