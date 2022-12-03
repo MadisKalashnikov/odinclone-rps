@@ -36,14 +36,13 @@ function getUserChoice() {
 	let choice = prompt("rock, paper or scissors?", "rock");
 	if (choice === null) {
 		return "chicken";
-	} else {
-		choice.toLocaleLowerCase().trim();
-	};
+	}
+	choice = choice.toLowerCase().trim();
 	while (!choices.includes(choice)) {
 		if (choice === null) {
 			return "chicken";
 		};
-		choice = prompt(`choose rock, paper or scissors. "${choice}" is not a valid option`).toLocaleLowerCase().trim();
+		choice = prompt(`choose rock, paper or scissors. "${choice}" is not a valid option`).toLowerCase().trim();
 	};
 	return choice;
 };
