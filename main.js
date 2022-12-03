@@ -36,14 +36,16 @@ function getUserChoice() {
 	let choice = prompt("rock, paper or scissors?", "rock");
 	if (choice === null) {
 		return "chicken";
+	} else {
+		choice.toLocaleLowerCase().trim();
 	};
-	while (!choices.includes(choice.toLocaleLowerCase().trim())) {
+	while (!choices.includes(choice)) {
 		if (choice === null) {
 			return "chicken";
 		};
-		choice = prompt(`choose rock, paper or scissors. "${choice}" is not a valid option`);
+		choice = prompt(`choose rock, paper or scissors. "${choice}" is not a valid option`).toLocaleLowerCase().trim();
 	};
-	return choice.toLocaleLowerCase().trim()
+	return choice;
 };
 
 // logs
@@ -122,9 +124,9 @@ function playAGame(rounds = 5, bestOf = false) {
 	// checks
 	if (typeof parseInt(rounds) === "number") {
 		if (isNaN(rounds)) {
-			return `silly goose, i need a number`
+			return `silly goose, i need a number`;
 		} else {
-			rounds = parseInt(rounds)
+			rounds = parseInt(rounds);
 		};
 	};
 	if (rounds <= 0) {
