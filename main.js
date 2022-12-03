@@ -33,17 +33,17 @@ function getComputerChoice() {
 	return choice;
 };
 function getUserChoice() {
-	let choice = prompt("rock, paper or scissors?", "rock")
+	let choice = prompt("rock, paper or scissors?", "rock");
 	if (choice === null) {
 		return "chicken";
 	};
-	while (!choices.includes(choice)) {
+	while (!choices.includes(choice.toLocaleLowerCase().trim())) {
 		if (choice === null) {
 			return "chicken";
 		};
 		choice = prompt(`choose rock, paper or scissors. "${choice}" is not a valid option`);
 	};
-	return choice.toLowerCase();
+	return choice.toLocaleLowerCase().trim()
 };
 
 // logs
@@ -172,12 +172,12 @@ function playAGame(rounds = 5, bestOf = false) {
 	};
 	if (userScore > computerScore) {
 		logFinalResult("user");
-		return "winner winner, chicken dinner"
+		return "nice, maybe"
 	} else if (computerScore > userScore) {
 		logFinalResult("computer");
-		return "you suck"
+		return "why bad?"
 	} else if (computerScore === userScore) {
 		logFinalResult("draw");
-		return "you still suck"
+		return "why still so bad"
 	} else return "whoops, something went wrong.";
 };
